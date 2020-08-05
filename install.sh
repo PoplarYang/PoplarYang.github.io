@@ -3,7 +3,7 @@
 # *************************************************************
 # *                                                           *
 # * Name: install.sh                                          *
-# * Version: v0.0.1                                           *
+# * Version: v0.0.2                                           *
 # * Function: quick install app base on arch and os           * 
 # * Create Time: 2020-08-05                                   *
 # * Modify Time: 2020-08-05                                   *
@@ -27,19 +27,19 @@ bat
 qcmd
 bmon
 )
-echo "${APPS[@]}"
+
 bat=(
-qcmd-v0.4.2-darwin-x64
-qcmd-v0.4.2-linux-x86
-qcmd-v0.4.2-linux-x64
-qcmd-v0.4.2-linux-arm64
-qcmd-v0.4.2-linux-mips64le
-qcmd-v0.4.2-windows-x86.exe
-qcmd-v0.4.2-windows-x64.exe
+qcmd.v0.4.2.darwin-amd64
+qcmd.v0.4.2.linux-386
+qcmd.v0.4.2.linux-amd64
+qcmd.v0.4.2.linux-arm64
+qcmd.v0.4.2.linux-mips64el
+qcmd.v0.4.2.windows-386.exe
+qcmd.v0.4.2.windows-amd64.exe
 )
-echo $bat
+
 function init() {
-    echo -e "\tselect operation"
+    echo -e "\tSelect operation type"
     select app in INSTALL CONFIG REPO; do
         case $app in
 	    INSTALL)
@@ -55,35 +55,31 @@ function init() {
                 echo "Wrong select, enter number."
 		;;
 	esac
-
-        exit 0
-        #else
-        #    echo "Wrong select, enter number."
-        #fi
     done
 }
 
 function install() {
-    echo -e "\tselect wihch app to install"
+    echo -e "\tSelect wihch app to install"
     select app in ${APPS[@]}; do
         select_items $app
-        exit 0
-        #else
-        #    echo "Wrong select, enter number."
-        #fi
     done
+}
+
+#TODO: such as s3cfg, pip.conf, ansible.cfg,
+function config() {
+}
+
+#TODO: such as centos6/7/8, ubuntu16/18/20, debian9/10, Neokylin v7, Kylin v10,
+function repo() {
 }
 
 function select_items() {
     item=$1
     appv="$(eval echo $(eval echo "\$\{"$item"\[\@\]\}"))"
-    echo -e "\tselect wihch version to install"
+    echo -e "\tSelect wihch version to install"
     select app in ${appv[@]}; do
         wget "$base_url/$app"
         exit 0
-        #else
-        #    echo "Wrong select, enter number."
-        #fi
     done
 }
 
