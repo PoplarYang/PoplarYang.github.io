@@ -66,12 +66,12 @@ function install() {
 }
 
 #TODO: such as s3cfg, pip.conf, ansible.cfg,
-function config() {
-}
+#function config() {
+#}
 
 #TODO: such as centos6/7/8, ubuntu16/18/20, debian9/10, Neokylin v7, Kylin v10,
-function repo() {
-}
+#function repo() {
+#}
 
 function select_items() {
     item=$1
