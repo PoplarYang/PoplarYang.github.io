@@ -1,0 +1,5 @@
+git config color.ui true
+git config push.default simple
+git config core.editor vim
+git config user.name "PoplarYang"
+git config user.email "echohiyang@foxmail.com"

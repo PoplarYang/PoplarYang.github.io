@@ -3,10 +3,10 @@
 # *************************************************************
 # *                                                           *
 # * Name: install.sh                                          *
-# * Version: v0.0.2                                           *
+# * Version: v0.0.3                                           *
 # * Function: quick install app base on arch and os           * 
 # * Create Time: 2020-08-05                                   *
-# * Modify Time: 2020-08-05                                   *
+# * Modify Time: 2020-08-06                                   *
 # * Writen by PoplarYang (echohelloyang@gmail.com)            *
 # *                                                           *
 # *************************************************************
@@ -21,7 +21,7 @@
 #support
 
 base_url=http://qinius.echosoul.cn
-git_url=http://PoplarYang.github.io/files
+git_url=http://PoplarYang.github.io
 
 APPS=(
 bat
@@ -86,6 +86,10 @@ FILES=(
 Makefile
 )
 
+CONFIGS=(
+git_user_email.txt
+)
+
 function init() {
     echo -e "\tSelect operation type"
     select app in INSTALL CONFIG REPO FILES; do
@@ -117,8 +121,17 @@ function install() {
 }
 
 #TODO: such as s3cfg, pip.conf, ansible.cfg,
-#function config() {
-#}
+function config() {
+    echo -e "\tSelect wihch config to install or download"
+    select f in ${CONFIGS[@]}; do
+        if echo $f | grep -q "\.txt$"; then
+	    curl "$git_url/configs/$f"
+	else
+            wget "$git_url/configs/$f"
+	fi
+	exit 0
+    done
+}
 
 #TODO: such as centos6/7/8, ubuntu16/18/20, debian9/10, Neokylin v7, Kylin v10,
 #function repo() {
