@@ -125,7 +125,7 @@ function config() {
     echo -e "\tSelect wihch config to install or download"
     select f in ${CONFIGS[@]}; do
         if echo $f | grep -q "\.txt$"; then
-	    curl "$git_url/configs/$f"
+	    curl -sSL "$git_url/configs/$f"
 	else
             wget "$git_url/configs/$f"
 	fi
