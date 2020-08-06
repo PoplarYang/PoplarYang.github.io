@@ -21,7 +21,7 @@
 #support
 
 base_url=http://qinius.echosoul.cn
-git_url=http://PoplarYang.github.io
+git_url=https://PoplarYang.github.io
 
 APPS=(
 bat
