@@ -17,32 +17,32 @@ function get_data() {
         HP-UX)
             OS=HP-UX
             VERSION=""
-	        CPU=$(lscpu | sed 's/型号名称：/Model name:/g' | egrep "Architecture|^CPU\(s\)|Model name" | sed 's/\s\+//g')
+            CPU=$(lscpu | sed 's/型号名称：/Model name:/g' | egrep "Architecture|^CPU\(s\)|Model name" | sed 's/\s\+//g')
             TOTAL_MEM=$(cat /proc/meminfo | grep MemTotal | awk '{print $2/1024/1024"G"}')
-	    ;;
+        ;;
         AIX)
             OS=AIX
             VERSION=""
-	        CPU=$(lscpu | sed 's/型号名称：/Model name:/g' | egrep "Architecture|^CPU\(s\)|Model name" | sed 's/\s\+//g')
+            CPU=$(lscpu | sed 's/型号名称：/Model name:/g' | egrep "Architecture|^CPU\(s\)|Model name" | sed 's/\s\+//g')
             TOTAL_MEM=$(cat /proc/meminfo | grep MemTotal | awk '{print $2/1024/1024"G"}')
-	    ;;
+        ;;
         SunOS)
             OS=SunOS
             VERSION=""
-	        CPU=$(lscpu | sed 's/型号名称：/Model name:/g' | egrep "Architecture|^CPU\(s\)|Model name" | sed 's/\s\+//g')
+            CPU=$(lscpu | sed 's/型号名称：/Model name:/g' | egrep "Architecture|^CPU\(s\)|Model name" | sed 's/\s\+//g')
             TOTAL_MEM=$(cat /proc/meminfo | grep MemTotal | awk '{print $2/1024/1024"G"}')
-	    ;;
+        ;;
         Darwin)
             OS=Darwin
             VERSION=""
-	        model=$(sysctl machdep.cpu | grep machdep.cpu.brand_string | sed 's/machdep.cpu.brand_string/Model name/')
-	        cpus=$(sysctl machdep.cpu | grep machdep.cpu.thread_count | sed 's/machdep.cpu.thread_count/CPU\(s\)/')
-	        arch="Architecture: $(uname -m)"
-	        CPU="$model\n$cpus\n$arch"
+            model=$(sysctl machdep.cpu | grep machdep.cpu.brand_string | sed 's/machdep.cpu.brand_string/Model name/')
+            cpus=$(sysctl machdep.cpu | grep machdep.cpu.thread_count | sed 's/machdep.cpu.thread_count/CPU\(s\)/')
+            arch="Architecture: $(uname -m)"
+            CPU="$model\n$cpus\n$arch"
             TOTAL_MEM=$(top -l 1 | head -n 10 | grep PhysMem | awk '{print $2}')
             GCC=$(gcc --version 2> /dev/null | grep "Apple clang version" | awk '{print $4}')
-            PYTHON=$(python --version | awk '{print $2}')
-	    ;;
+            PYTHON=$(python --version 2>&1 | awk '{print $2}')
+        ;;
         Linux)
             if [ -s /etc/oracle-release ]; then
                 OS=Oracle
@@ -63,11 +63,11 @@ function get_data() {
                 OS="Unknown Linux"
                 VERSION="Unknown OS"
             fi
-	        CPU=$(lscpu | sed 's/型号名称：/Model name:/g' | egrep "Architecture|^CPU\(s\)|Model name" | sed 's/\s\+//g')
+            CPU=$(lscpu | sed 's/型号名称：/Model name:/g' | egrep "Architecture|^CPU\(s\)|Model name" | sed 's/\s\+//g')
             TOTAL_MEM=$(cat /proc/meminfo | grep MemTotal | awk '{print $2/1024/1024"G"}')
             GCC=$(gcc --version | fgrep "gcc (GCC)" | awk '{print $3}')
-            PYTHON=$(python --version | awk '{print $2}')
-	    ;;
+            PYTHON=$(python --version 2>&1 | awk '{print $2}')
+        ;;
         *)
             OS="Unknown UNIX/Linux"
             VERSION="Unknown OS" ;;
@@ -78,7 +78,7 @@ function get_data() {
     echo "Kernel Version: $KERNEL"
     echo "Memory Total: $TOTAL_MEM"
     echo "GCC: $GCC"
-    #echo "Python: $PYTHON"
+    echo "Python: $PYTHON"
 }
 
 function format_data() {
