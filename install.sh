@@ -3,10 +3,10 @@
 # *************************************************************
 # *                                                           *
 # * Name: install.sh                                          *
-# * Version: v0.0.3                                           *
+# * Version: v0.0.4                                           *
 # * Function: quick install app base on arch and os           * 
 # * Create Time: 2020-08-05                                   *
-# * Modify Time: 2020-08-06                                   *
+# * Modify Time: 2020-08-18                                   *
 # * Writen by PoplarYang (echohelloyang@gmail.com)            *
 # *                                                           *
 # *************************************************************
@@ -90,9 +90,13 @@ CONFIGS=(
 git_user_email.txt
 )
 
+MISC=(
+git-completion
+)
+
 function init() {
     echo -e "\tSelect operation type"
-    select app in INSTALL CONFIG REPO FILES; do
+    select app in INSTALL CONFIG REPO FILES MISC; do
         case $app in
 	    INSTALL)
 		install
@@ -106,6 +110,9 @@ function init() {
 	    FILES)
 		files
 		;;
+	    MISC)
+		misc
+		;;
 	    *)
                 echo "Wrong select, enter number."
 		;;
@@ -113,12 +120,24 @@ function init() {
     done
 }
 
+
 function install() {
     echo -e "\tSelect wihch app to install"
     select app in ${APPS[@]}; do
         select_items $app
     done
 }
+
+function select_items() {
+    item=$1
+    appv="$(eval echo $(eval echo "\$\{"$item"\[\@\]\}"))"
+    echo -e "\tSelect wihch version to install"
+    select app in ${appv[@]}; do
+        wget "$base_url/$app"
+        exit 0
+    done
+}
+
 
 #TODO: such as s3cfg, pip.conf, ansible.cfg,
 function config() {
@@ -133,9 +152,11 @@ function config() {
     done
 }
 
+
 #TODO: such as centos6/7/8, ubuntu16/18/20, debian9/10, Neokylin v7, Kylin v10,
 #function repo() {
 #}
+
 
 function files() {
     echo -e "\tSelect wihch file to download"
@@ -145,14 +166,24 @@ function files() {
     done
 }
 
-function select_items() {
-    item=$1
-    appv="$(eval echo $(eval echo "\$\{"$item"\[\@\]\}"))"
-    echo -e "\tSelect wihch version to install"
-    select app in ${appv[@]}; do
-        wget "$base_url/$app"
-        exit 0
+
+function misc() {
+    echo -e "\tSelect wihch to install"
+    select cmd in ${MISC[@]}; do
+        eval $cmd
     done
+}
+
+function git-completion() {
+    wget --timeout=10 https://raw.github.com/git/git/master/contrib/completion/git-completion.bash -O ~/.git-completion.bash
+    cat << EOF
+Please add bellow command to your cuurent $HOME/.bashrc or $HOME/.zshrc
+
+if [ -f ~/.git-completion.bash ]; then
+    . ~/.git-completion.bash
+fi
+EOF
+    exit
 }
 
 init
