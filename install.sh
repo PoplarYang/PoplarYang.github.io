@@ -84,6 +84,8 @@ upto.v0.0.1.windows-amd64.exe
 
 FILES=(
 Makefile
+format_disks.sh
+git-completion.bash
 )
 
 CONFIGS=(
