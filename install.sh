@@ -94,31 +94,34 @@ git_user_email.txt
 
 MISC=(
 git-completion
+pipconf
+s3cfg
+dns
 )
 
 function init() {
     echo -e "\tSelect operation type"
     select app in INSTALL CONFIG REPO FILES MISC; do
         case $app in
-	    INSTALL)
-		install
-		;;
-	    CONFIG)
-	        config
-		;;
-	    REPO)
-	        repo
-		;;
-	    FILES)
-		files
-		;;
-	    MISC)
-		misc
-		;;
-	    *)
+            INSTALL)
+        	install
+        	;;
+            CONFIG)
+                config
+        	;;
+            REPO)
+                repo
+        	;;
+            FILES)
+        	files
+        	;;
+            MISC)
+        	misc
+        	;;
+            *)
                 echo "Wrong select, enter number."
-		;;
-	esac
+        	;;
+        esac
     done
 }
 
@@ -185,7 +188,59 @@ if [ -f ~/.git-completion.bash ]; then
     . ~/.git-completion.bash
 fi
 EOF
-    exit
+}
+
+function pipconf() {
+    mkdir $HOME/.pip &> /dev/null
+    cat > $HOME/.pip/pip.conf << EOF
+[global]
+index-url=https://pypi.douban.com/simple/
+extra-index-url=http://mirrors.aliyun.com/pypi/simple/
+        https://pypi.tuna.tsinghua.edu.cn/simple/
+        http://pypi.mirrors.ustc.edu.cn/simple/
+timeout=20
+[install]
+trusted-host=pypi.douban.com
+        mirrors.aliyun.com
+        pypi.tuna.tsinghua.edu.cn
+        pypi.mirrors.ustc.edu.cn
+[freeze]
+timeout = 10
+EOF
+    if [ $? -eq 0 ]; then
+	echo "gen $HOME/.pip/pip.conf ok"
+    else
+	echo "gen $HOME/.pip/pip.conf failed"
+    fi
+}
+
+function s3cfg() {
+    cat << EOF
+# $HOME/.s3cfg
+[default]
+access_key = <access_key>
+secret_key = <secret_key>
+bucket_location = <region>
+host_base = <endpoint>
+host_bucket = <endpoint>
+use_https = False
+
+# or
+s3cmd --configure \\
+    --access_key=<access_key> \\
+    --secret_key=<secret_key> \\
+    --region=<region> \\
+    --host=<endpoint> \\
+    --host-bucket=<endpoint> \\
+    --no-ssl
+EOF
+}
+
+function dns() {
+    cat << EOF
+nameserver 223.5.5.5
+nameserver 223.6.6.6
+EOF
 }
 
 init
