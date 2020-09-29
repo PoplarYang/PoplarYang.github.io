@@ -3,10 +3,10 @@
 # *************************************************************
 # *                                                           *
 # * Name: install.sh                                          *
-# * Version: v0.0.4                                           *
-# * Function: quick install app base on arch and os           * 
+# * Version: v0.0.5                                           *
+# * Function: quick install app base on arch and os           *
 # * Create Time: 2020-08-05                                   *
-# * Modify Time: 2020-08-18                                   *
+# * Modify Time: 2020-09-29                                   *
 # * Writen by PoplarYang (echohelloyang@gmail.com)            *
 # *                                                           *
 # *************************************************************
@@ -99,28 +99,34 @@ s3cfg
 dns
 )
 
+REPOS=(
+Centos-6
+Centos-7
+Centos-8
+)
+
 function init() {
     echo -e "\tSelect operation type"
     select app in INSTALL CONFIG REPO FILES MISC; do
         case $app in
             INSTALL)
-        	install
-        	;;
+                install
+                ;;
             CONFIG)
                 config
-        	;;
+                ;;
             REPO)
                 repo
-        	;;
+                ;;
             FILES)
-        	files
-        	;;
+                files
+                ;;
             MISC)
-        	misc
-        	;;
+                misc
+                ;;
             *)
                 echo "Wrong select, enter number."
-        	;;
+                ;;
         esac
     done
 }
@@ -149,25 +155,31 @@ function config() {
     echo -e "\tSelect wihch config to install or download"
     select f in ${CONFIGS[@]}; do
         if echo $f | grep -q "\.txt$"; then
-	    curl -sSL "$git_url/configs/$f"
-	else
+            curl -sSL "$git_url/configs/$f"
+        else
             wget "$git_url/configs/$f"
-	fi
-	exit 0
+        fi
+        exit 0
     done
 }
 
 
 #TODO: such as centos6/7/8, ubuntu16/18/20, debian9/10, Neokylin v7, Kylin v10,
-#function repo() {
-#}
+function repo() {
+    select f in ${REPOS[@]}; do
+        version=$(echo $f | awk -F '-' '{print $2}')
+        wget https://mirrors.aliyun.com/repo/Centos-${version}.repo
+        wget https://mirrors.aliyun.com/repo/epel-${version}.repo
+        exit 0
+    done
+}
 
 
 function files() {
     echo -e "\tSelect wihch file to download"
     select f in ${FILES[@]}; do
         wget "$git_url/files/$f"
-	exit 0
+        exit 0
     done
 }
 
@@ -208,9 +220,9 @@ trusted-host=pypi.douban.com
 timeout = 10
 EOF
     if [ $? -eq 0 ]; then
-	echo "gen $HOME/.pip/pip.conf ok"
+        echo "gen $HOME/.pip/pip.conf ok"
     else
-	echo "gen $HOME/.pip/pip.conf failed"
+        echo "gen $HOME/.pip/pip.conf failed"
     fi
 }
 
