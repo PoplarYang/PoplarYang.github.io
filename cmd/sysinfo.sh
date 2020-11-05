@@ -79,6 +79,9 @@ function get_data() {
     echo "Memory Total: $TOTAL_MEM"
     echo "GCC: $GCC"
     echo "Python: $PYTHON"
+    diskcount=$(fdisk -l 2> /dev/null | grep "/dev/sd" | wc -l)
+    echo "Total Disk count: $diskcount"
+    fdisk -l 2> /dev/null | grep "/dev/sd" | awk -F',' '{print $1}' | sort -k 2
 }
 
 function format_data() {
