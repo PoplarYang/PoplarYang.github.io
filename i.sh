@@ -23,7 +23,10 @@
 base_url=http://qjhcjqfnk.hd-bkt.clouddn.com
 
 BINS=(
+s3browser-cli.linux.amd64
 s3browser-cli.darwin
+s3browser-cli.linux.arm
+s3browser-cli.linux.mips64le
 )
 
 function bin() {
