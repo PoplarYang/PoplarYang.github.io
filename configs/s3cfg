@@ -1,0 +1,17 @@
+# $HOME/.s3cfg
+[default]
+access_key = <access_key>
+secret_key = <secret_key>
+bucket_location = <region>
+host_base = <endpoint>
+host_bucket = <endpoint>
+use_https = False
+
+# or
+s3cmd --configure \\
+    --access_key=<access_key> \\
+    --secret_key=<secret_key> \\
+    --region=<region> \\
+    --host=<endpoint> \\
+    --host-bucket=<endpoint> \\
+    --no-ssl

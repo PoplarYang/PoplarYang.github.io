@@ -1,5 +1,15 @@
 # bash/zsh completion support for core Git.
 #
+
+####
+# https://raw.github.com/git/git/master/contrib/completion/git-completion.bash -O ~/.git-completion.bash
+### put it at ~/.git-completion.bash
+#Please add bellow command to your cuurent $HOME/.bashrc or $HOME/.zshrc
+#if [ -f ~/.git-completion.bash ]; then
+#    . ~/.git-completion.bash
+#fi
+####
+
 # Copyright (C) 2006,2007 Shawn O. Pearce <spearce@spearce.org>
 # Conceptually based on gitcompletion (http://gitweb.hawaga.org.uk/).
 # Distributed under the GNU General Public License, version 2.0.
