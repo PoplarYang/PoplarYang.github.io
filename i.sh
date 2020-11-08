@@ -33,6 +33,7 @@ function bin() {
     echo -e "\tSelect wihch plantform s3browser download"
     select f in ${BINS[@]}; do
         wget "$base_url/bin/$f"
+        exit 0
     done
 }
 
