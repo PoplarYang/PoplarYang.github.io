@@ -6,6 +6,7 @@ bucket_location = <region>
 host_base = <endpoint>
 host_bucket = <endpoint>
 use_https = False
+signature_v2 = False # false represent s3v4
 
 # or
 s3cmd --configure \\
